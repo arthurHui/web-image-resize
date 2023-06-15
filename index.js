@@ -1,4 +1,4 @@
-async function resize({
+async function optimize({
     file,
     maxFileSize,
     maxDimensionPixel,
@@ -63,45 +63,40 @@ async function resize({
         blob = await getBlob(middleQuality);
         if (isPNG) {
             while (
-                Math.abs(blob.size / 1024 - maxSize) > maxDeviation &&
+                Math.abs(blob.size / 1024 - maxFileSize) > maxDeviation &&
                 iteration < 8
             ) {
-                console.log('!!!before blob.size', blob.size / 1024, 'kb');
                 canvas.width = img.width * middleQuality;
                 canvas.height = img.height * middleQuality;
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 blob = await getBlob(middleQuality);
-                if (blob.size / 1024 < maxSize - maxDeviation) {
+                if (blob.size / 1024 < maxFileSize - maxDeviation) {
                     lowQuality = middleQuality;
-                } else if (blob.size / 1024 > maxSize) {
+                } else if (blob.size / 1024 > maxFileSize) {
                     highQuality = middleQuality;
                 }
                 middleQuality = (lowQuality + highQuality) / 2;
                 iteration += 1;
-                console.log('!!!after blob.size', blob.size / 1024, 'kb');
             }
         } else {
             while (
-                Math.abs(blob.size / 1024 - maxSize) > maxDeviation &&
+                Math.abs(blob.size / 1024 - maxFileSize) > maxDeviation &&
                 iteration < 8
             ) {
-                console.log('!!!before blob.size', blob.size / 1024, 'kb');
                 blob = await getBlob(middleQuality);
-                if (blob.size / 1024 < maxSize - maxDeviation) {
+                if (blob.size / 1024 < maxFileSize - maxDeviation) {
                     lowQuality = middleQuality;
-                } else if (blob.size / 1024 > maxSize) {
+                } else if (blob.size / 1024 > maxFileSize) {
                     highQuality = middleQuality;
                 }
                 middleQuality = (lowQuality + highQuality) / 2;
                 iteration += 1;
-                console.log('!!!after blob.size', blob.size / 1024, 'kb');
             }
         }
-        console.log('!!!final blob.size', blob.size / 1024, 'kb');
         return callback(blob);
     }
 };
 
 export default {
-    resize
+    optimize
 }
