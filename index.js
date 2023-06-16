@@ -97,6 +97,58 @@ async function optimize({
     }
 };
 
+async function resize({
+    file,
+    callback,
+    height = null,
+    width = null,
+    autoScale = false,
+}) {
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+
+    img.onload = async () => {
+        let canvas;
+        let ctx;
+        try {
+            canvas = document.createElement("canvas");
+            ctx = canvas.getContext("2d");
+
+            // if height and width is null, return original size
+            if (!height || !width) {
+                canvas.width = image.width;
+                canvas.height = image.height;
+            }
+            // check is autoScale and someone value is null
+            else if (autoScale && (!height || !width)) {
+                if (!!height) {
+                    canvas.width = (img.width / img.height) * height;
+                    canvas.height = height;
+                } else if (!!width) {
+                    canvas.width = width;
+                    canvas.height = (img.height / img.width) * width;
+                }
+            } else {
+                canvas.width = width;
+                canvas.height = height;
+            }
+        } catch (e) {
+            console.log(e);
+        }
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        const blob = await new Promise((resolve2, reject2) => {
+            canvas.toBlob((blob) => {
+                resolve2(blob);
+            });
+        });
+
+        callback(blob);
+    };
+}
+
 export default {
-    optimize
+    optimize,
+    resize
 }
