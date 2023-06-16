@@ -4,7 +4,7 @@
 ## 📦Install
 
 ```sh
-npm install resize-img
+npm install web-image-resize
 ```
 
 ## 🔨Usage
