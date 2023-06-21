@@ -97,7 +97,7 @@ export default Test
 `callback`
 | Type | Default value | Description |
 | --- | --- | --- |
-| Function | Requested | A callback function for return optimized file, this will return a Blob |
+| Function | Requested | A callback function for return resized file, this will return a Blob |
 
 ### optional
 `height`
@@ -113,4 +113,4 @@ export default Test
 `autoScale`
 | Type | Default value | Description |
 | --- | --- | --- |
-| string | 'image/webp' | Fit original file scale  |
+| boolean | false | Fit original file scale  |
