@@ -1,5 +1,6 @@
 ## ✨ Features
 * Optimize image to target size
+* Resize image
 
 ## 📦Install
 
@@ -35,6 +36,15 @@ const Test = () => {
                     console.log(data)
                     setImg(URL.createObjectURL(data))
                 }
+            })}>optimize</button>
+            <button onClick={async () => await resize.resize({
+                file,
+                height: 50,
+                autoScale: true,
+                callback: (data) => {
+                    console.log(data)
+                    setImg(URL.createObjectURL(data))
+                }
             })}>resize</button>
             <img src={img} />
         </div>
@@ -46,6 +56,7 @@ export default Test
 
 ## API
 
+## Optimize
 `file`
 | Type | Default value | Description | 
 | --- | --- | --- |
@@ -76,3 +87,30 @@ export default Test
 | Type | Default value | Description |
 | --- | --- | --- |
 | string | 'image/webp' | Target file type |
+
+## Resize
+`file`
+| Type | Default value | Description | 
+| --- | --- | --- |
+| File | Requested | The original file |
+
+`callback`
+| Type | Default value | Description |
+| --- | --- | --- |
+| Function | Requested | A callback function for return optimized file, this will return a Blob |
+
+### optional
+`height`
+| Type | Default value | Description |
+| --- | --- | --- |
+| number | null |  |
+
+`width`
+| Type | Default value | Description |
+| --- | --- | --- |
+| number | null |  |
+
+`autoScale`
+| Type | Default value | Description |
+| --- | --- | --- |
+| string | 'image/webp' | Fit original file scale  |
